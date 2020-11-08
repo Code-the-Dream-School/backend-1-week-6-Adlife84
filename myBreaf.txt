@@ -1,10 +1,14 @@
 
 
 
-1. get a random number between 1 - 100 within 7 guesses 
+1. get a random number between 1 - 100 within 7 guesses
 2. ask user number from input
 3. compare the numbers
 4. show result (Guessed a == b, Too low a < 10, a > 10 it is low, high or (> 10 is too high) )
 5. Show total result with button (reset game)
 
-Optional: The screen should change color based on the closeness of the user's guess. Be sure to use light colors so that the text can be read. (for example: cold is blue or sky when it is cold and orange and red when it is hot)
+Optional: 
+
+1. The screen should change color based on the closeness of the user's guess. Be sure to use light colors so that the text can be read. (for example: cold is blue or sky when it is cold and orange and red when it is hot)
+
+2. Animate get rundom action
