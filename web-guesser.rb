@@ -19,36 +19,48 @@ isWin = FALSE
 # if number > random less than 10 to warm
 # if number == random than Win!!! :)
 # if counter == 0 than Lose :( 
-def mainLogicGame(number, random_number)
+def mainLogicGame(number, random_number, counter)
     puts "Hello from mainLogicGame number is: #{number} "
     puts "Delta is: #{delta = random_number - number}"
     
     delta = random_number - number
-    
-      if delta == 0
+    result = ""
+
+      if counter == 0 
+        result = "Sorry :((( You Lose."
+      elsif delta == 0
       puts "You Win! :) #{delta}"
+      result = "You Guessed!!!"
+
       elsif delta > 0  
         if delta <= 10
           puts "#{delta} <= 10"
-          backgroundColor = "LightSkyBlue"
+          result = "It is Hot!!!"
+          backgroundColor = "Salmon"
         else
           puts "#{delta} > 10"
-          backgroundColor = "DeepSkyBlue"
+          result = "It is Warm!"
+          backgroundColor = "FireBrick"
         end
+
       elsif delta < 0
         if delta >= -10
           puts "#{delta} <= -10"
-          backgroundColor = "Salmon"
+          result = "It's Cold"
+          backgroundColor = "LightSkyBlue"
+          
         else
           puts "#{delta} > -10"
-          backgroundColor = "FireBrick"
+          result = "It's Super cold!!!"
+          backgroundColor = "DeepSkyBlue"
         end
+
       else
           puts "Sorry! Nothing mutch :( #{delta}"
+          resul = "Sorry! Nothing mutch :( #{delta}"
       end
-    
+      return result
 end
-
 
 
 get '/'do
@@ -64,13 +76,14 @@ get '/game' do
   @guess_history = guess_history
   @counter = counter
   @backgroundColor = backgroundColor
+  @result = session[:guess_result]
   erb :game
 end
 
 
 post '/guess' do
   "Hello from guess"
-  mainLogicGame(params["number"].to_i, random_number)
+  session[:guess_result] = mainLogicGame(params["number"].to_i, random_number, counter)
   session[:guess_history] = params["number"]
   guess_history.push(params["number"].to_i)
   counter = counter - 1

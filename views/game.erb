@@ -5,13 +5,13 @@
 <p> GuessNumber is: <%= @guessNumber %> </p>
 <p> Counter is: <%= @counter %> </p>
 <p> Background: <%= @backgroundColor %> </p>
-
+<p> Result: <%= @result %> </p>
 
 <div>
     <form method="post" action="/guess">
         <fieldset>
             <label for="number">Number:</label>
-            <input type="text" name="number" id="number" placeholder="Enter your number">
+            <input type="text" name="number" id="number" placeholder="Enter your number" autofocus>
         </fieldset>
         <input type="submit">   
     </form>
