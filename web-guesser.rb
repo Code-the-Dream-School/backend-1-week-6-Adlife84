@@ -10,7 +10,7 @@ random_number = rand(1..100)
 guess_history = []
 backgroundColor = "Salmon"
 isWin = FALSE
-
+result = ""
 
 # Take a number as argument and return (win, lose, counter of guesses)
 # if number < random more than 10 to frize 
@@ -19,45 +19,49 @@ isWin = FALSE
 # if number > random less than 10 to warm
 # if number == random than Win!!! :)
 # if counter == 0 than Lose :( 
+
+# Main method of the game (takes 3 argument and return result as a String)
 def mainLogicGame(number, random_number, counter)
     puts "Hello from mainLogicGame number is: #{number} "
     puts "Delta is: #{delta = random_number - number}"
     
     delta = random_number - number
-    result = ""
+    
 
-      if counter == 0 
+      if counter == 1 
+        puts "Sorry :((( You Lose. #{delta}"
         result = "Sorry :((( You Lose."
+        # redirect "/result"
       elsif delta == 0
-      puts "You Win! :) #{delta}"
-      result = "You Guessed!!!"
+        puts "You Win! :) #{delta}"
+        result = "You Guessed!!!"
+        # redirect "/result"
 
       elsif delta > 0  
         if delta <= 10
           puts "#{delta} <= 10"
-          result = "It is Hot!!!"
+          result = "Your guess is much too low!!!"
           backgroundColor = "Salmon"
         else
           puts "#{delta} > 10"
-          result = "It is Warm!"
+          result = "Your guess is close but too low!"
           backgroundColor = "FireBrick"
         end
 
       elsif delta < 0
         if delta >= -10
-          puts "#{delta} <= -10"
-          result = "It's Cold"
+          puts "#{delta} >= -10"
+          result = "Your guess is close but too high!"
           backgroundColor = "LightSkyBlue"
-          
         else
-          puts "#{delta} > -10"
-          result = "It's Super cold!!!"
+          puts "#{delta} < -10"
+          result = "Your guess is way too high!!!"
           backgroundColor = "DeepSkyBlue"
         end
 
       else
           puts "Sorry! Nothing mutch :( #{delta}"
-          resul = "Sorry! Nothing mutch :( #{delta}"
+          result = "Sorry! Nothing mutch :( #{delta}"
       end
       return result
 end
@@ -90,6 +94,13 @@ post '/guess' do
   redirect "/game"
 end
 
+get '/result' do
+  puts "Hello from Total Result"
+  @guess_history = guess_history
+  @result = session[:guess_result]
+  erb :total_result
+end
+
 
 
 # Example session
@@ -104,24 +115,4 @@ end
 get '/bar' do
   session[:message]   # => 'Hello World!'
 end
-
-
-
-
-
-
-
-
-# get '/foo' do
-#     "Hello from '/foo' route!"
-#     session[:secret] = 57
-#     session[:guess_history] = [11, 23]
-#     redirect "/bar"
-# end
-
-# get '/bar' do
-#     "Hello from '/bar' route!"
-#     session[:secret]   # => '57'
-# end
-
 

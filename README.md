@@ -27,6 +27,13 @@ program from your browser.
 
 This Sinatra project is a Web Guesser.  The program chooses a secret number at random from 1 to 100.  The user gets at most 7 guesses for the number.  For each guess, if the guess is more than 10 less than the secret number, the program says Your guess is much too low.  If the guess is within 10, but too low, the program says, your guess is close but too low.  If the guess is within 10, but too high, the program says, your guess is close but too high.  If the guess is more than 10 too high, the program says, your guess is way too high.  If the user guesses right, the program says you win, but if the user runs out of guesses, the program says you lose.  The screen shows the list of guesses.  If the user wins or loses, a screen is put up that announces the result, with a "play again" button at the bottom to restart the game.
 
+random = 50
+
+delta = random - 45      # 5 <= 10 - Your guess is much too low
+delta = random - 35     # 15 delta > 10 - Your guess is close but too low
+delta = random - 55     # -5 delta >= 10 Your guess is close but too high
+delta = random - 70    # -20 < 10 - Your guess is way too high
+
 You will need to create a sinatra program called web-guesser.rb plus two erb files.  The erb files will be in the views directory.
 
 Optional: The screen should change color based on the closeness of the user's guess.  Be sure to use light colors so that the text can be read.
