@@ -44,14 +44,7 @@ input[type="submit"]:active {
   background-color: #c3222a;
 }
 
-div + a,
-div a {
-  background-color: #aaa;
-}
-div + a:hover,
-div a:hover {
-  background-color: #888;
-}
+
 div a { margin-right: 10px; }
 div a + form { display: inline-block; }
 

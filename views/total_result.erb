@@ -1,6 +1,23 @@
-<h1> Total result page </h1>
+<!DOCTYPE html>
+<html>
+  <head>
+     <link rel="stylesheet" href="/style.css">
+  </head>
+  <body style="background-color: #{@backgroundColor};">
 
-<p> Guesses history: <%= @guess_history %> </p>
-<p> Guesses Resolt: <%= @result %> </p>
+    <h1> Total result page </h1>
 
-<a href="/">Play again</a>
+    <p> Guesses history: <%= @guess_history %> </p>
+    
+    <% if @total_result == "You Guessed!!!" %>
+        <h2> 😀 <%= @total_result %> 🥳 </h2>
+    <% else %>
+        <h2> 😢 <%= @total_result %> 😭</h2>
+    <% end %>
+
+    <a href="/">Play again</a>
+
+  </body>
+</html>
+
+

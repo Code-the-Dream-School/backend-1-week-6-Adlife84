@@ -8,9 +8,11 @@ set :bind, "0.0.0.0"
 counter = 7
 random_number = rand(1..100)
 guess_history = []
-backgroundColor = "Salmon"
+backgroundColor = "Red"
 isWin = FALSE
 result = ""
+
+
 
 # Take a number as argument and return (win, lose, counter of guesses)
 # if number < random more than 10 to frize 
@@ -22,12 +24,11 @@ result = ""
 
 # Main method of the game (takes 3 argument and return result as a String)
 def mainLogicGame(number, random_number, counter)
-    puts "Hello from mainLogicGame number is: #{number} "
+    puts "Hello from mainLogicGame! Number is: #{number} "
     puts "Delta is: #{delta = random_number - number}"
     
     delta = random_number - number
     
-
       if counter == 1 
         puts "Sorry :((( You Lose. #{delta}"
         result = "Sorry :((( You Lose."
@@ -36,34 +37,43 @@ def mainLogicGame(number, random_number, counter)
         puts "You Win! :) #{delta}"
         result = "You Guessed!!!"
         # redirect "/result"
-
+      
       elsif delta > 0  
         if delta <= 10
           puts "#{delta} <= 10"
           result = "Your guess is much too low!!!"
-          backgroundColor = "Salmon"
+          changeBackground("Salmon")
         else
           puts "#{delta} > 10"
           result = "Your guess is close but too low!"
-          backgroundColor = "FireBrick"
+          changeBackground("FireBrick")
         end
 
       elsif delta < 0
         if delta >= -10
           puts "#{delta} >= -10"
           result = "Your guess is close but too high!"
-          backgroundColor = "LightSkyBlue"
+          changeBackground("LightSkyBlue")
         else
           puts "#{delta} < -10"
           result = "Your guess is way too high!!!"
-          backgroundColor = "DeepSkyBlue"
+          changeBackground("DeepSkyBlue")
         end
 
       else
           puts "Sorry! Nothing mutch :( #{delta}"
           result = "Sorry! Nothing mutch :( #{delta}"
-      end
-      return result
+      end 
+    return result
+end
+
+def changeBackground(colorName = "Salmon")
+  # backgroundColor = "Salmon"
+  # backgroundColor = "FireBrick"
+  # backgroundColor = "LightSkyBlue"
+  # backgroundColor = "DeepSkyBlue"
+  puts "BackgroundColor is: #{colorName}"
+  session[:backgroundColor] = colorName
 end
 
 
@@ -79,15 +89,24 @@ get '/game' do
   @guessNumber = session[:guess_history]
   @guess_history = guess_history
   @counter = counter
-  @backgroundColor = backgroundColor
+  @backgroundColor = session[:backgroundColor]
   @result = session[:guess_result]
-  erb :game
+  
+  # Check Won or Lose if true go to /result page with all data else continue the game 
+  if result == "You Guessed!!!" || result == "Sorry :((( You Lose."
+    session[:total_result] = @result
+    redirect "/result"
+  else
+    erb :game 
+  end
+  
 end
 
 
 post '/guess' do
   "Hello from guess"
-  session[:guess_result] = mainLogicGame(params["number"].to_i, random_number, counter)
+  result = mainLogicGame(params["number"].to_i, random_number, counter)
+  session[:guess_result] = result
   session[:guess_history] = params["number"]
   guess_history.push(params["number"].to_i)
   counter = counter - 1
@@ -97,22 +116,29 @@ end
 get '/result' do
   puts "Hello from Total Result"
   @guess_history = guess_history
-  @result = session[:guess_result]
+  @total_result = session[:total_result]
+  
+  # Reset game status 
+  counter = 7
+  guess_history = []
+  random_number = rand(1..100)
+  result = ""
+
   erb :total_result
 end
 
 
 
-# Example session
-get '/foo' do
-  session[:message] = 'Hello World!'
-  session[:secret] = 57
-  session[:guess_history] = [11, 23]
+# # Example session
+# get '/foo' do
+#   session[:message] = 'Hello World!'
+#   session[:secret] = 57
+#   session[:guess_history] = [11, 23]
   
-  redirect ('/bar')
-end
+#   redirect ('/bar')
+# end
 
-get '/bar' do
-  session[:message]   # => 'Hello World!'
-end
+# get '/bar' do
+#   session[:message]   # => 'Hello World!'
+# end
 
